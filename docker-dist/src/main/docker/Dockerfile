@@ -38,7 +38,7 @@ ENV HAWKULAR_BACKEND=cassandra \
 USER root
 RUN mkdir -p /opt/data && \
     chown -R jboss:jboss ${JBOSS_HOME}/{standalone,domain} /opt/data && \
-    chmod -R ug+rw ${JBOSS_HOME}/{standalone,domain} /opt/data
+    chmod -R ugo+rw ${JBOSS_HOME}/{standalone,domain} /opt/data
 
 VOLUME ["/opt/data"]
 
