@@ -68,7 +68,9 @@
       shell: >
         oc process -f ./hawkular-services-persistent.yaml
         --param HAWKULAR_SERVICES_IMAGE={{ hawkular_services_image }}
+        --param HAWKULAR_SERVICES_IMAGE_TAG={{ hawkular_services_image_tag }}
         --param CASSANDRA_IMAGE={{ cassandra_image }}
+        --param CASSANDRA_IMAGE_TAG={{ openshift_cluster_version }}
         --param ROUTE_NAME={{ route_name }}
         | oc create -f -
       register: command_result

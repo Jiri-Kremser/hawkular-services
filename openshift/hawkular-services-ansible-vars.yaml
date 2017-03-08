@@ -18,11 +18,14 @@
 ---
 project_name: myproject
 
-hawkular_services_image: hawkular/hawkular-services:0.33.0.Final
+hawkular_services_image: hawkular/hawkular-services
+
+# hawkular_services_image_tag: 0.33.0.Final
+hawkular_services_image_tag: latest
 
 hawkular_services_data_limit: 1Gi
 
-cassandra_image: openshift/origin-metrics-cassandra:v1.4.1
+cassandra_image: openshift/origin-metrics-cassandra
 
 cassandra_data_limit: 2Gi
 
