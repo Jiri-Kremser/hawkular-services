@@ -154,11 +154,11 @@
       register: hawkular_services_address
 
     - name: Get the hawkular-services username
-      shell: sleep 10 && oc get pod -l name=hawkular-services -o 'jsonpath={..env[?(@.name=="HAWKULAR_USER")].value}'
+      shell: oc env dc/hawkular-services --list | grep HAWKULAR_USER | cut -f2 -d'='
       register: real_hawkular_user
 
     - name: Get the hawkular-services password
-      shell: oc get pod -l name=hawkular-services -o 'jsonpath={..env[?(@.name=="HAWKULAR_PASSWORD")].value}'
+      shell: oc env dc/hawkular-services --list | grep HAWKULAR_PASSWORD | cut -f2 -d'='
       register: real_hawkular_password
 
     - name: Print out the hawkular-services address
