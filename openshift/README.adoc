@@ -39,6 +39,27 @@ If you want to shut it down, just type in `oc cluster down`.
 TIP: The behavior of the `startEphemeral.sh` script can be customized by environment variables.
      E.g.: `HAWKULAR_SERVICES_IMAGE="hawkular/hawkular-services:x.y.z.Final" ./startEphemeral.sh`
 
+
+     [source,bash]
+      ----
+      # add the first persistent volume
+      oc volume dc/hawkular-services --add --name=h-services-pv --type=hostPath --path=/tmp/pv-services --overwrite
+
+      # add the second persistent volume
+      oc volume dc/hawkular-cassandra --add --name=cassandra-pv --type=hostPath --path=/tmp/pv-cassandra --overwrite
+      
+      # add the first persistent volume claim
+      oc volume dc/hawkular-services --add --name=h-services-pv --overwrite \
+                --type=persistentVolumeClaim --claim-name=h-services-pvc --claim-mode=ReadWriteOnce --claim-size=1Gi
+
+      # add the second persistent volume claim
+      oc volume dc/hawkular-cassandra --add --name=cassandra-pv --overwrite \
+                --type=persistentVolumeClaim --claim-name=cassandra-pvc --claim-mode=ReadWriteOnce --claim-size=1Gi
+      ----
+
+      Basically, what it does is that it overrides the storage settings defined in the ephemeral
+      template to use the 'PVs' and 'PVCs'.
+
 [[prerequisites]]
 Prerequisites
 ~~~~~~~~~~~~~
