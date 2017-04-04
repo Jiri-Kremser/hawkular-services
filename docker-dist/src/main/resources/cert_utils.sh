@@ -78,9 +78,9 @@ add_certificate() {
       add_cert_as_trusted
     else
       # generate the keystore and the key pair in it
-      # todo: perhaps we don't want to use the localhost but something given by env property (for OpenShift)
+      local _dname=${HAWKULAR_HOSTNAME:-"localhost"}
       keytool -genkeypair -keystore ${KEYSTORE_HOME}/hawkular.keystore -alias hawkular \
-       -dname "CN=localhost" -keyalg RSA -keysize 4096 -storepass hawkular \
+       -dname "CN=${_dname}" -keyalg RSA -keysize 4096 -storepass hawkular \
        -keypass hawkular -validity 3650 -ext san=ip:127.0.0.1
 
       add_cert_as_trusted
