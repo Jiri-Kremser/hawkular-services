@@ -56,35 +56,38 @@ add_certificate() {
       create_empty_keystore
 
       # convert the external key pair into pkcs12 file
-      openssl pkcs12 -export -out ${KEYSTORE_HOME}/hawkular.pkcs12 -in ${_public_key} -inkey ${_private_key}
+      openssl pkcs12 -export -out ${KEYSTORE_HOME}/hawkular.pkcs12 -in ${_public_key} -inkey ${_private_key} \
+        -passout pass: -name hawkular
 
       # import the pkcs12 file to the keystore
-      keytool -v -importkeystore -srckeystore ${KEYSTORE_HOME}/hawkular.pkcs12 -srcstoretype PKCS12
-        -destkeystore ${KEYSTORE_HOME}/hawkular.keystore -deststoretype JKS
+      keytool -importkeystore -srckeystore ${KEYSTORE_HOME}/hawkular.pkcs12 -srcalias hawkular -srcstorepass "" \
+        -srcstoretype PKCS12 -destkeystore ${KEYSTORE_HOME}/hawkular.keystore -deststoretype JKS -destalias hawkular \
+        -deststorepass hawkular -destkeypass hawkular -noprompt
       rm ${KEYSTORE_HOME}/hawkular.pkcs12
 
       # import the external certificate in pem as a trusted certificate for the current JDK
       keytool -import -keystore $JAVA_HOME/jre/lib/security/cacerts -alias hawkular -storepass changeit \
-       -file ${_public_key} -noprompt
+        -file ${_public_key} -noprompt
     elif [[ -f ${_keypair} ]] && [[ -s ${_keypair} ]]; then
-      # pkcs12 case
+      # pkcs12 case (no password is assumed)
 
       create_empty_keystore
 
       # import the pkcs12 file to the keystore
-      keytool -v -importkeystore -srckeystore ${_keypair} -srcstoretype PKCS12
-        -destkeystore ${KEYSTORE_HOME}/hawkular.keystore -deststoretype JKS
+      keytool -importkeystore -srckeystore ${_keypair} -srcalias hawkular -srcstorepass "" -srcstoretype PKCS12 \
+        -destkeystore ${KEYSTORE_HOME}/hawkular.keystore -deststoretype JKS -destalias hawkular \
+        -deststorepass hawkular -destkeypass hawkular -noprompt
 
       add_cert_as_trusted
     else
       # generate the keystore and the key pair in it
-      local _dname=${HAWKULAR_HOSTNAME:-"localhost"}
+      local _dname=${HAWKULAR_HOSTNAME:-${HOSTNAME:-"localhost"}}
       keytool -genkeypair -keystore ${KEYSTORE_HOME}/hawkular.keystore -alias hawkular \
-       -dname "CN=${_dname}" -keyalg RSA -keysize 4096 -storepass hawkular \
-       -keypass hawkular -validity 3650 -ext san=ip:127.0.0.1
+        -dname "CN=${_dname}" -keyalg RSA -keysize 4096 -storepass hawkular \
+        -keypass hawkular -validity 3650 -ext san=ip:127.0.0.1
 
       add_cert_as_trusted
     fi
-    use_ssl_standalone_xml
+    use_standalone_ssl_xml
   fi
 }

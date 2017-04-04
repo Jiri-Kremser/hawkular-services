@@ -25,7 +25,7 @@
   <xsl:template match="//*[local-name()='config']/*[local-name()='subsystem']/*[local-name()='storage-adapter' and contains(@type, 'HAWKULAR')]">
     <xsl:copy>
       <xsl:attribute name="use-ssl">true</xsl:attribute>
-      <xsl:attribute name="security-realm">UndertowRealm</xsl:attribute>
+      <xsl:attribute name="security-realm">HawkularAgentRealm</xsl:attribute>
       <xsl:apply-templates select="node()|comment()|@*"/>
     </xsl:copy>
   </xsl:template>

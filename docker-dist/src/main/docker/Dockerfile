@@ -39,8 +39,8 @@ USER root
 RUN yum install --quiet -y openssl && \
     rm -rf /var/cache/yum && \
     mkdir -p /opt/data && \
-    chown -R jboss:jboss ${JBOSS_HOME}/{standalone,domain} /opt/data && \
-    chmod -R ugo+rw ${JBOSS_HOME}/{standalone,domain} /opt/data
+    chown -R jboss:jboss ${JBOSS_HOME}/{standalone,domain} /opt/data $JAVA_HOME/jre/lib/security/cacerts && \
+    chmod -R ugo+rw ${JBOSS_HOME}/{standalone,domain} /opt/data $JAVA_HOME/jre/lib/security/cacerts
 
 VOLUME ["/opt/data"]
 

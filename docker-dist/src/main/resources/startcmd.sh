@@ -16,7 +16,6 @@
 # limitations under the License.
 #
 
-
 get_credentials() {
   # The username is obtained as a content of file '/client-secrets/hawkular-services.username'
   # if the file does not exist or is empty, the value of $HAWKULAR_USER is used
@@ -24,10 +23,11 @@ get_credentials() {
   # The same precendence rules apply for the password.
 
   local _username_file="/client-secrets/hawkular-services.username"
-  if [[ -f ${_username_file} && [[ -s ${_username_file} ]] ]]; then
+  if [[ -f ${_username_file} ]] && [[ -s ${_username_file} ]]; then
     username=$(cat ${_username_file})
   else
     username=${HAWKULAR_USER:-"$(head /dev/urandom -c 512 | tr -dc A-Z-a-z-0-9 | head -c 16)"}
+    [[ -z ${HAWKULAR_USER} ]] && generated="true"
   fi
 
   local _password_file="/client-secrets/hawkular-services.password"
@@ -35,6 +35,7 @@ get_credentials() {
     password=$(cat ${_password_file})
   else
     password=${HAWKULAR_PASSWORD:-"$(head /dev/urandom -c 512 | tr -dc A-Z-a-z-0-9 | head -c 16)"}
+    [[ -z ${HAWKULAR_PASSWORD} ]] && generated="true"
   fi
 }
 
@@ -52,6 +53,7 @@ create_user() {
     # we add the ${username} user
     ${JBOSS_HOME}/bin/add-user.sh -a -u "${username}" -p "${password}" -g read-write,read-only -s
     RT=$?
+    [[ ${generated} != "true" ]] && return 0
     if [[ ${RT} -eq 0 ]]; then
       echo "------------------------------------"
       echo "ATTENTION ATTENTION ATTENTION ATTENTION"
@@ -84,9 +86,11 @@ run_hawkular_services() {
 }
 
 main() {
-  source ./cert_utils.sh
+  source $(dirname "$0")/cert_utils.sh
   get_credentials
   create_user
   add_certificate
   run_hawkular_services "$@"
 }
+
+main "$@"

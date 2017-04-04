@@ -21,7 +21,7 @@
 
   <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" xalan:indent-amount="4" standalone="no" />
 
-  <!-- Add the new security realm -->
+  <!-- Add the new security realms -->
   <xsl:template match="/*[local-name()='server']/*[local-name()='management']/*[local-name()='security-realms']/*[local-name()='security-realm' and contains(@name, 'ManagementRealm')]">
     <xsl:element name="security-realm" namespace="{namespace-uri()}">
       <xsl:attribute name="name">UndertowRealm</xsl:attribute>
@@ -34,6 +34,17 @@
             <xsl:attribute name="key-password">hawkular</xsl:attribute>
             <xsl:attribute name="alias">hawkular</xsl:attribute>
           </xsl:element>
+        </xsl:element>
+      </xsl:element>
+    </xsl:element>
+
+    <xsl:element name="security-realm" namespace="{namespace-uri()}">
+      <xsl:attribute name="name">HawkularAgentRealm</xsl:attribute>
+      <xsl:element name="authentication" namespace="{namespace-uri()}">
+        <xsl:element name="truststore" namespace="{namespace-uri()}">
+          <xsl:attribute name="path">hawkular.keystore</xsl:attribute>
+          <xsl:attribute name="relative-to">jboss.server.config.dir</xsl:attribute>
+          <xsl:attribute name="keystore-password">hawkular</xsl:attribute>
         </xsl:element>
       </xsl:element>
     </xsl:element>
