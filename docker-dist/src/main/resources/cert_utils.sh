@@ -38,9 +38,9 @@ add_cert_as_trusted() {
 }
 
 # add the security realm, HTTPS listener and turn SSL for agent
-use_ssl_standalone_xml() {
-  # todo: create the ssl-standalone.xml or use sed -i or something clever on xml, or jboss-cli.sh
-  cp ${JBOSS_HOME}/standalone/configuration/ssl-standalone.xml ${JBOSS_HOME}/standalone/configuration/standalone.xml
+use_standalone_ssl_xml() {
+  cp ${JBOSS_HOME}/standalone/configuration/standalone.xml ${JBOSS_HOME}/standalone/configuration/standalone-orig.xml
+  cp ${JBOSS_HOME}/standalone/configuration/standalone-ssl.xml ${JBOSS_HOME}/standalone/configuration/standalone.xml
 }
 
 add_certificate() {

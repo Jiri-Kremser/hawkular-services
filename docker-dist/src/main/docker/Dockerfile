@@ -35,10 +35,6 @@ ENV HAWKULAR_BACKEND=cassandra \
     HAWKULAR_USE_SSL=false \
     HAWKULAR_METRICS_TTL=${metrics_ttl}
 
-LABEL name=hawkular-services \
-      description=Hawkular-Services all-in-one (including Hawkular Metrics, Hawkular Alerts and Hawkular Inventory).
-
-
 USER root
 RUN yum install --quiet -y openssl && \
     rm -rf /var/cache/yum && \
