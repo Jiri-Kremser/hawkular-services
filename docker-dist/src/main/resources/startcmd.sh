@@ -86,6 +86,7 @@ run_hawkular_services() {
 }
 
 main() {
+  echo "Starting Hawkular Services"
   source $(dirname "$0")/cert_utils.sh
   get_credentials
   create_user
