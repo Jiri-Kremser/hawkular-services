@@ -79,8 +79,8 @@ run_hawkular_services() {
          -Djboss.server.log.dir=${HAWKULAR_DATA:-/opt/data}/log \
          -Dactivemq.artemis.client.global.thread.pool.max.size=${HAWKULAR_JMS_THREAD_POOL:-30} \
          -Dhawkular.agent.enabled=${HAWKULAR_AGENT_ENABLE} \
-         -Dhawkular.rest.user=${HAWKULAR_USER} \
-         -Dhawkular.rest.password=${HAWKULAR_PASSWORD} \
+         -Dhawkular.rest.user=${username} \
+         -Dhawkular.rest.password=${password} \
          -Dhawkular.metrics.default-ttl=${HAWKULAR_METRICS_TTL:-14} \
          "$@"
 }
