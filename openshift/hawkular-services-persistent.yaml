@@ -29,11 +29,11 @@ parameters:
 - name: HAWKULAR_SERVICES_IMAGE
   description: What docker image should be used for hawkular-services.
   displayName: Hawkular Services Docker Image
-  value: hawkular/hawkular-services:0.38.0.Final
+  value: hawkular/hawkular-services:0.39.0.Final
 - name: CASSANDRA_IMAGE
   description: What docker image should be used for cassandra node.
   displayName: Cassandra Docker Image
-  value: openshift/origin-metrics-cassandra:v1.5.1
+  value: openshift/origin-metrics-cassandra:v3.6.0
 - name: CASSANDRA_MEMORY_LIMIT
   description: Maximum amount of memory for Cassandra container.
   displayName: Cassandra Memory Limit
